@@ -1,5 +1,6 @@
 const Joi = require('joi')
 
+
 const UserReg = Joi.object().keys({
     name: Joi.string().trim().required(),
     email: Joi.string().trim().required().email(),
@@ -7,6 +8,7 @@ const UserReg = Joi.object().keys({
     role: Joi.string().trim().required(),
     password2: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'must match password' } } })
 })
+
 
 const UserLog = Joi.object().keys({
     email: Joi.string().trim().required().email(),
