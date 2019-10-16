@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const passport = require("passport")
 const keys = require('./config/keys')
 const app = express()
 const port = 3000 || process.env.PORT
@@ -18,9 +19,16 @@ mongoose.connect( keys.database.mongoURI, err => {
 
 var con = mongoose.connection;
 
+// Passport config
+require("./src/helpers/passport")(passport);
+
+
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Passport middleware
+app.use(passport.initialize());
 
 app.use('/user', userRoute)
 

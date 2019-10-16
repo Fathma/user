@@ -1,5 +1,9 @@
 const bcrypt = require('bcryptjs')
 const User = require('../models/user.model')
+const passport = require('passport')
+const jwt = require('jsonwebtoken')
+const _ = require('lodash') 
+const keys = require('../../config/keys')
 
 exports.register =async (req, res)=>{
     const {email, password} = req.body
@@ -16,4 +20,11 @@ exports.register =async (req, res)=>{
         })
         
     }
+}
+
+// Login form POST
+exports.login =async (req, res) => {
+    let user = req.user
+    let token = jwt.sign({ user: _.pick(user, '_id') }, keys.jwt.secret, { expiresIn:'1h' }) 
+    res.json({token})
 }
