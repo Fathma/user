@@ -7,22 +7,22 @@ const User = mongoose.model("User");
 
 // user authentication by passport.js localstrategy. 
 module.exports = function(passport) {
-    passport.use( new LocalStrategy({ usernameField: "email" },async (email, password, done) => {
+    passport.use( new LocalStrategy({ usernameField: "email" },async ( email, password, done ) => {
         
         // checks whether user already exists or not
         let user = User.findOne({ email })
         
-        if (!user) {
-        return done(null, false, { message: "No user found" });
+        if ( !user ) {
+            return done( null, false, { message: "No user found" } );
         }
 
         // matches the given password with the encrypted password 
         bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) throw err;
-            if (isMatch) {
-                return done(null, user);
+            if ( err ) throw err;
+            if ( isMatch ) {
+                return done( null, user );
             } else {
-                return done(null, false, { message: "Password incorrect" });
+                return done( null, false, { message: "Password incorrect" } );
             }
         })
       })
