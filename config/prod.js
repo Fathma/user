@@ -4,5 +4,9 @@ module.exports = {
     },
     jwt:{
         secret: process.env.jwt_secret
+    },
+    email:{
+        MAILGUN_USER: process.env.MAILGUN_USER,
+        MAILGUN_PASS: process.env.MAILGUN_PASS 
     }
 }

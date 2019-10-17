@@ -17,7 +17,7 @@ const UserLog = Joi.object().keys({
 
 
 exports.UserRegistration = (req, res, next)=>{
-    console.log(req.body)
+
     Joi.validate(req.body, UserReg, (err, result)=>{
         if(err){
             res.json({err})

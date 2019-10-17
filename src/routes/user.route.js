@@ -36,8 +36,10 @@ const storage = new GridFsStorage(
 const upload = multer({ storage })
 
 
-router.post('/register', validate.UserRegistration, upload.single('imageURL'), user.register)
+router.post('/register', validate.UserRegistration, user.register)
 router.post('/login', validate.UserLogin, passport.authenticate('local', { session: false }), user.login)
+router.get('/verify/:token', user.verify)
+
 
 
 module.exports = router
