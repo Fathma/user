@@ -26,18 +26,37 @@ exports.register = async (req, res)=>{
 }
 
 
-// Login form POST
 exports.login = async (req, res) => {
     let user = req.user
     let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
     res.json({ token })
 }
 
+
 exports.verify = async (req, res)=>{
-    const { err, user } = jwt.verify(req.params.token, keys.jwt.secret) 
-    if ( user ) {
-        await User.update({ _id: user }, { $set: { verified:true } })
-        res.json({ msg: 'verified!' })
+    try {
+        const { user } = jwt.verify(req.params.token, keys.jwt.secret) 
+        if ( user ) {
+            await User.update({ _id: user }, { $set: { verified:true } })
+            res.json({ msg: 'verified!' })
+        }
+    } catch( err ) {
+        res.json( err )
     }
-    if ( err ) res.json({ err })
+}
+
+
+exports.profile = async (req, res)=>{
+    let user = await User.findOne({ _id: req.params.id })
+    if(!user){
+        res.json({ err:'No user found' })
+    }else{
+        res.json( user )
+    }
+}
+
+
+exports.list = async (req, res)=>{
+    let users = await User.find()
+    res.json(users)
 }
