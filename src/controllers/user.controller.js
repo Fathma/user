@@ -27,9 +27,13 @@ exports.register = async (req, res)=>{
 
 
 exports.login = async (req, res) => {
-    let user = req.user
-    let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
-    res.json({ token })
+    try{
+        let user = req.user
+        let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
+        res.json({ msg:"Registration Successfull!", token })
+    }catch(err){
+        res.json(err)
+    }
 }
 
 
@@ -59,4 +63,26 @@ exports.profile = async (req, res)=>{
 exports.list = async (req, res)=>{
     let users = await User.find()
     res.json(users)
+}
+
+
+exports.authGoogleRedirect = (req, res)=>{
+    try{
+        let user = req.user
+        let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
+        res.json({ msg:"Registration Successfull!", token })
+    }catch(err){
+        res.json(err)
+    }
+}
+
+
+exports.authFacebookRedirect = (req, res)=>{
+    try{
+        let user = req.user
+        let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
+        res.json({ msg:"Registration Successfull!", token })
+    }catch(err){
+        res.json(err)
+    }
 }

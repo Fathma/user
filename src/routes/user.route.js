@@ -40,9 +40,10 @@ router.post('/login', validate.UserLogin, passport.authenticate('local', { sessi
 router.get('/verify/:token', user.verify)
 router.get('/single/:id', user.profile)
 router.get('/list', user.list)
+router.get('/google',  passport.authenticate('google', { scope:['profile', 'email'] }))
+router.get('/google/redirect',  passport.authenticate('google'), user.authGoogleRedirect)
 
-
-
-
+router.get('/facebook', passport.authenticate('facebook'));
+router.get('/facebook/callback', passport.authenticate('facebook'), user.authFacebookRedirect);
 
 module.exports = router
