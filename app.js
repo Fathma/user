@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const passport = require("passport")
 const keys = require('./config/keys')
 const app = express()
-const port = 3000 || process.env.PORT
+const port = 5000 || process.env.PORT
 
 const userRoute = require('./src/routes/user.route')
 
