@@ -17,7 +17,7 @@ exports.register = async (req, res)=>{
                 new User( req.body ).save().then(async(user)=>{
                     let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
                     let url = `http://localhost:3000/user/verify/${token}`
-                    await Email.sendEmail( 'devtestjihad@gmail.com', user.email, 'Password Change', `<a href='${url}'>verify</a>` );
+                    await Email.sendEmail( 'hiddenowl038@gmail.com', user.email, 'Password Change', `<a href='${url}'>verify</a>` );
                     res.json({ msg: 'registration Successful. Verify your email!' })
                 })
             })
@@ -66,22 +66,32 @@ exports.list = async (req, res)=>{
 }
 
 
-exports.authGoogleRedirect = (req, res)=>{
+exports.authGoogleRedirect = async (req, res)=>{
     try{
         let user = req.user
-        let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
-        res.json({ msg:"Registration Successfull!", token })
+        let user_exist= await User.findOne({ _id: user._id })
+        if(user_exist){
+            res.json({err: "Email already exists!"})
+        }else{
+            let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
+            res.json({ msg:"Registration Successfull!", token })    
+        }
     }catch(err){
         res.json(err)
     }
 }
 
 
-exports.authFacebookRedirect = (req, res)=>{
+exports.authFacebookRedirect = async (req, res)=>{
     try{
         let user = req.user
-        let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
-        res.json({ msg:"Registration Successfull!", token })
+        let user_exist= await User.findOne({ _id: user._id })
+        if(user_exist){
+            res.json({err: "Email already exists!"})
+        }else{
+            let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
+            res.json({ msg:"Registration Successfull!", token })
+        }
     }catch(err){
         res.json(err)
     }
