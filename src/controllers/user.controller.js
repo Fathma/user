@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
     try{
         let user = req.user
         let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
-        res.json({ msg:"Registration Successfull!", token })
+        res.json(token)
     }catch(err){
         res.json(err)
     }
