@@ -32,4 +32,16 @@ app.use(passport.initialize());
 
 app.use('/user', userRoute)
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+server.listen(process.env.PORT || 3000);
+
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    
+  });
+})
+
+// app.listen(port, () => console.log(`Example app listening on port ${port}!`))
