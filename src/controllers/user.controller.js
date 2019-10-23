@@ -51,7 +51,7 @@ exports.verify = async (req, res)=>{
 
 
 exports.profile = async (req, res)=>{
-    let user = await User.findOne({ _id: req.params.id })
+    let user =  req.user
     if(!user){
         res.json({ err:'No user found' })
     }else{
@@ -61,6 +61,7 @@ exports.profile = async (req, res)=>{
 
 
 exports.list = async (req, res)=>{
+// console.log(req.user)
     let users = await User.find()
     res.json(users)
 }
