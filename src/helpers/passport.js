@@ -66,19 +66,18 @@ module.exports = (passport)=> {
         User.findOne({ facebookId: profile.id }, ( err, user )=>{
         if(!user){
             var user = { 
-            username: profile.displayName,
-            facebookId: profile.id,
-            email: profile._json.email, 
-            role: "user",
-            verified: true
-        }
-        new User( user ).save().then( user => done( null, user ))
+                username: profile.displayName,
+                facebookId: profile.id,
+                email: profile._json.email, 
+                role: "user",
+                verified: true
+            }
+            new User( user ).save().then( user => done( null, user ))
         }else{
             done( null, user )
         }
         })
-    }
-    ))
+    }))
 
 
     passport.use( new JwtStrategy( opts, ( payload, done ) => {

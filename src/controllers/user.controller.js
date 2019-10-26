@@ -61,7 +61,6 @@ exports.profile = async (req, res)=>{
 
 
 exports.list = async (req, res)=>{
-// console.log(req.user)
     let users = await User.find()
     res.json(users)
 }
@@ -70,13 +69,8 @@ exports.list = async (req, res)=>{
 exports.authGoogleRedirect = async (req, res)=>{
     try{
         let user = req.user
-        let user_exist= await User.findOne({ _id: user._id })
-        if(user_exist){
-            res.json({err: "Email already exists!"})
-        }else{
-            let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
-            res.json({ msg:"Registration Successfull!", token })    
-        }
+        let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
+        res.json({ token })    
     }catch(err){
         res.json(err)
     }
@@ -86,13 +80,8 @@ exports.authGoogleRedirect = async (req, res)=>{
 exports.authFacebookRedirect = async (req, res)=>{
     try{
         let user = req.user
-        let user_exist= await User.findOne({ _id: user._id })
-        if(user_exist){
-            res.json({err: "Email already exists!"})
-        }else{
-            let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
-            res.json({ msg:"Registration Successfull!", token })
-        }
+        let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
+        res.json({ token })
     }catch(err){
         res.json(err)
     }
