@@ -44,6 +44,8 @@ router.get('/google',  passport.authenticate('google', { scope:['profile', 'emai
 router.get('/google/redirect',  passport.authenticate('google'), user.authGoogleRedirect)
 
 router.get('/facebook', passport.authenticate('facebook'));
-router.get('/facebook/callback', passport.authenticate('facebook'), user.authFacebookRedirect);
+router.get('/facebook/callback', passport.authenticate('facebook'), user.authFacebookRedirect)
+router.post('/forgetPassword/emailOTP', user.emailOTP);
+router.get('/forgetPassword/checkOTP/:otp', user.checkOTP);
 
 module.exports = router

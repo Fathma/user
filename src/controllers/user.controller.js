@@ -86,3 +86,33 @@ exports.authFacebookRedirect = async (req, res)=>{
         res.json(err)
     }
 }
+
+
+exports.emailOTP = async (req, res)=>{
+    
+    let user = await User.findOne({ email: req.body.email })
+    if(!user) res.json({ err:"email doesn't exist!" })
+    else {
+        const token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' })
+        const url = 'http://localhost:5000/user/forgetPassword/checkOTP/'+ token
+        await Email.sendEmail( 'hiddenowl038@gmail.com', user.email, 'Password Change', `<p> OTP:'${url}'</p>` )
+            res.json({ msg: 'An OTP is sent to the email' })
+    }
+}
+exports.checkOTP = async (req, res)=>{
+    try {
+        
+        const { user } = jwt.verify(req.params.otp, keys.jwt.secret) 
+        if ( user ) {
+            res.json({ msg: 'otp Matched' , user_id: user._id})
+        }else{
+            err={
+                msg:"not matched"
+            }
+            res.json(err)
+        }
+    } catch( err ) {
+        console.log("Sdf")
+        res.json( err )
+    }
+}
