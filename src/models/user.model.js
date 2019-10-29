@@ -5,7 +5,7 @@ const UserSchema = new Schema({
     name: { type: String },
     email: { type:String, required:true },
     password: { type: String },
-    role: { type: String},
+    role: { type: String, default:"user"},
     // imageURL: { type: String, required:true },
     verified: { type: Boolean, default:false },
     date: { type: String, default:Date.now },

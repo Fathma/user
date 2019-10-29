@@ -37,7 +37,7 @@ const upload = multer({ storage })
 
 router.post('/register', validate.UserRegistration, user.register)
 router.post('/login', validate.UserLogin, passport.authenticate('local', { session: false }), user.login)
-router.get('/verify/:token', user.verify)
+router.post('/verify/:id', user.verify)
 router.get('/profile', passport.authenticate('jwt', { session: false }), user.profile)
 router.get('/list', passport.authenticate('jwt', { session: false }), user.list)
 router.get('/google',  passport.authenticate('google', { scope:['profile', 'email'] }))
@@ -45,7 +45,7 @@ router.get('/google/redirect',  passport.authenticate('google'), user.authGoogle
 
 router.get('/facebook', passport.authenticate('facebook'));
 router.get('/facebook/callback', passport.authenticate('facebook'), user.authFacebookRedirect)
-router.post('/forgetPassword/emailOTP', user.emailOTP);
-router.get('/forgetPassword/checkOTP/:otp', user.checkOTP);
+router.get('/forgetPassword/emailOTP', user.emailOTP);
+router.post('/forgetPassword/checkOTP', user.checkOTP);
 
 module.exports = router
