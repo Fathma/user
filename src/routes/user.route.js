@@ -42,6 +42,8 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), user.pr
 router.get('/list', passport.authenticate('jwt', { session: false }), user.list)
 router.get('/google',  passport.authenticate('google', { scope:['profile', 'email'] }))
 router.get('/google/redirect',  passport.authenticate('google'), user.authGoogleRedirect)
+router.get('/update/:id', user.update)
+
 
 router.get('/facebook', passport.authenticate('facebook'));
 router.get('/facebook/callback', passport.authenticate('facebook'), user.authFacebookRedirect)

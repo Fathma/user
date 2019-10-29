@@ -127,3 +127,8 @@ exports.checkOTP = async (req, res)=>{
         res.json( err )
     }
 }
+
+exports.update = async (req, res)=>{
+    let user = await User.updateOne({ _id: req.params.id }, {$set: req.body})
+    res.json({msg: "updated successfully!!"})
+}
