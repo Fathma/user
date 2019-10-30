@@ -1,10 +1,10 @@
 # user rest API 
 
 1. User Registration 
-    1.1 Email verification using totp
-    1.2 saving image using multer
-    1.3 Password encryption using bcrypt
-    1.4 backend validation using joi
+	1.1 Email verification using totp
+	1.2 saving image using multer
+	1.3 Password encryption using bcrypt
+	1.4 backend validation using joi
  
  2. Signup with facebook using passport-facebook
  3. Sign uo with google using passport-google-oauth2
