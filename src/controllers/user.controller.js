@@ -14,25 +14,25 @@ exports.register = async (req, res)=>{
     let user = await User.findOne({ email })
     if( user ) res.json({ err:'Email already exists!' })
     else {
-        bcrypt.genSalt( 10, ( err, salt ) => {
-            bcrypt.hash( password, salt, ( err, hash ) => {
-                req.body.password = hash
-                req.body.imageURL = `https://ecom-admin.herokuapp.com/image/${req.file.filename}`
-                new User( req.body ).save().then(async(user)=>{
-                    var token = speakeasy.totp({
-                        secret: secret.base32,
-                        encoding: 'base32'
-                        // time: 60 // specified in seconds
-                      })
-                    await Email.sendEmail( 'hiddenowl038@gmail.com', 'siddiquefathma@gmail.com', 'Password Change', `<p> OTP:'${token}'</p>` )
-                    res.json({ msg: 'An OTP is sent to the email' })
-                    // let token = jwt.sign({ user: _.pick( user, '_id' ) }, keys.jwt.secret, { expiresIn:'1h' }) 
-                    // let url = `http://localhost:3000/user/verify/${token}`
-                    // await Email.sendEmail( 'hiddenowl038@gmail.com', user.email, 'Password Change', `<a href='${token}'>verify</a>` );
-                    // res.json({ msg: 'registration Successful. Verify your email!' })
+        try{
+            bcrypt.genSalt( 10, ( err, salt ) => {
+                bcrypt.hash( password, salt, ( err, hash ) => {
+                    req.body.password = hash
+                    req.body.imageURL = `http://localhost:5000/image/${req.file.filename}`
+                    new User( req.body ).save().then(async(user)=>{
+                        var token = speakeasy.totp({
+                            secret: secret.base32,
+                            encoding: 'base32'
+                          })
+                        await Email.sendEmail( 'hiddenowl038@gmail.com', 'siddiquefathma@gmail.com', 'Password Change', `<p> OTP:'${token}'</p>` )
+                        res.json({ msg: 'An OTP is sent to the email' })
+                    })
                 })
             })
-        })
+        }catch(err){
+            res.json(err)
+        }
+        
     }
 }
 

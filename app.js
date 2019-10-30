@@ -52,14 +52,15 @@ app.get("/image/:filename", (req, res) => {
 
 app.use('/user', userRoute)
 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+// var server = require('http').Server(app);
+// var io = require('socket.io')(server);
 
-server.listen(process.env.PORT || 5000);
+// server.listen(process.env.PORT || 5000);
 
-io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
+// io.on('connection', function (socket) {
+//   socket.emit('news', { hello: 'world' });
+//   socket.on('my other event', function (data) {
     
-  });
-})
+//   });
+// })
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
