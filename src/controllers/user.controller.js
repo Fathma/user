@@ -8,6 +8,7 @@ const User = require('../models/user.model')
 const keys = require('../../config/keys')
 const Email = require('../helpers/email')
 
+
 exports.register = async (req, res)=>{
     const { email, password } = req.body
     let user = await User.findOne({ email })
@@ -16,6 +17,7 @@ exports.register = async (req, res)=>{
         bcrypt.genSalt( 10, ( err, salt ) => {
             bcrypt.hash( password, salt, ( err, hash ) => {
                 req.body.password = hash
+                req.body.imageURL = `https://ecom-admin.herokuapp.com/image/${req.file.filename}`
                 new User( req.body ).save().then(async(user)=>{
                     var token = speakeasy.totp({
                         secret: secret.base32,
@@ -132,3 +134,4 @@ exports.update = async (req, res)=>{
     let user = await User.updateOne({ _id: req.params.id }, {$set: req.body})
     res.json({msg: "updated successfully!!"})
 }
+

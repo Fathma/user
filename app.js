@@ -2,10 +2,12 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const passport = require("passport")
-const keys = require('./config/keys')
+const Grid = require('gridfs-stream')
+
 const app = express()
 const port = 5000 || process.env.PORT
 
+const keys = require('./config/keys')
 const userRoute = require('./src/routes/user.route')
 
 // Map global promise
@@ -17,7 +19,14 @@ mongoose.connect( keys.database.mongoURI, err => {
   else console.log("Error in DB connection :" + JSON.stringify(err, undefined, 2));
 });
 
-var con = mongoose.connection;
+con = mongoose.connection;
+
+let gfs;
+
+con.once('open', function () {
+ gfs = Grid(con.db, mongoose.mongo);
+ gfs.collection('fs');
+})
 
 // Passport config
 require("./src/helpers/passport")(passport);
@@ -30,6 +39,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Passport middleware
 app.use(passport.initialize());
+
+// route for fetching image
+app.get("/image/:filename", (req, res) => {
+ gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+   if(file != null ){
+     const readstream = gfs.createReadStream(file.filename)
+     readstream.pipe(res)
+   }
+ })
+});
 
 app.use('/user', userRoute)
 

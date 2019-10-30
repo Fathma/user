@@ -10,6 +10,7 @@ const user = require('../controllers/user.controller')
 const validate = require('../helpers/validations')
 const keys = require('../../config/keys')
 
+
 var filename;
 
 // create storage engine
@@ -35,19 +36,21 @@ const storage = new GridFsStorage(
 const upload = multer({ storage })
 
 
-router.post('/register', validate.UserRegistration, user.register)
+router.post('/register', upload.single('image'), validate.UserRegistration, user.register)
 router.post('/login', validate.UserLogin, passport.authenticate('local', { session: false }), user.login)
 router.post('/verify/:id', user.verify)
 router.get('/profile', passport.authenticate('jwt', { session: false }), user.profile)
 router.get('/list', passport.authenticate('jwt', { session: false }), user.list)
-router.get('/google',  passport.authenticate('google', { scope:['profile', 'email'] }))
-router.get('/google/redirect',  passport.authenticate('google'), user.authGoogleRedirect)
-router.get('/update/:id', user.update)
+router.post('/update/:id', passport.authenticate('jwt', { session: false }), user.update)
+router.get('/forgetPassword/emailOTP', passport.authenticate('jwt', { session: false }), user.emailOTP)
+router.post('/forgetPassword/checkOTP', passport.authenticate('jwt', { session: false }), user.checkOTP)
 
+router.get('/google', passport.authenticate('google', { scope:['profile', 'email'] }))
+router.get('/google/redirect', passport.authenticate('google'), user.authGoogleRedirect)
 
 router.get('/facebook', passport.authenticate('facebook'));
 router.get('/facebook/callback', passport.authenticate('facebook'), user.authFacebookRedirect)
-router.get('/forgetPassword/emailOTP', user.emailOTP);
-router.post('/forgetPassword/checkOTP', user.checkOTP);
+
+
 
 module.exports = router

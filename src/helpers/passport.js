@@ -15,7 +15,6 @@ const opts = {
     secretOrKey: keys.jwt.secret
 }
 
-
 module.exports = (passport)=> {
     passport.use( new LocalStrategy({ usernameField: "email" }, async ( email, password, done ) => {
         let user =await User.findOne({ email })
@@ -46,7 +45,8 @@ module.exports = (passport)=> {
             googleId: profile.id,
             email: profile.email,
             role: 'user',
-            verified: true
+            verified: true,
+            imageURL: profile.picture
         }
         new User( user ).save().then( user => done( null, user ))
         }else{
@@ -60,17 +60,19 @@ module.exports = (passport)=> {
         clientID: keys.facebook.clientID,
         clientSecret: keys.facebook.clientSecret,
         callbackURL: "/user/facebook/callback",
-        profileFields: [ 'displayName', 'emails' ] 
+        profileFields: [ 'displayName', 'emails', 'photos' ] 
     },
     ( accessToken, refreshToken, profile, done )=> {
         User.findOne({ facebookId: profile.id }, ( err, user )=>{
         if(!user){
+            
             var user = { 
                 username: profile.displayName,
                 facebookId: profile.id,
                 email: profile._json.email, 
                 role: "user",
-                verified: true
+                verified: true,
+                imageURL: profile._json.picture.data.url
             }
             new User( user ).save().then( user => done( null, user ))
         }else{
@@ -93,6 +95,7 @@ module.exports = (passport)=> {
         })
     }))
 }
+
 
 
 // saves it into cookies
