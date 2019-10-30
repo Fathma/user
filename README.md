@@ -1,4 +1,4 @@
-# user rest API 
+# User rest API 
 
 1. User Registration 
 	1.1 Email verification using totp
@@ -9,7 +9,7 @@
  2. Signup with facebook using passport-facebook
  3. Sign uo with google using passport-google-oauth2
  
- 4. User login(localhost:5000/user/login)
+ 4. User login
     4.1 Backend validation check using joi
     4.2 User authentication check using passport-local
     4.3 send jwt token as response
