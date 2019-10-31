@@ -8,7 +8,7 @@ const UserSchema = new Schema({
     role: { type: String, default:"user"},
     imageURL: { type: String},
     verified: { type: Boolean, default:false },
-    date: { type: String, default:Date.now },
+    date: { type: Date, default:Date.now },
     googleId: { type:String },
     facebookId: { type:String }
 })
