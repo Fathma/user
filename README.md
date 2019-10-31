@@ -1,4 +1,4 @@
-# User rest API 
+# User Rest API 
 
 1. User Registration 
 	1.1 Email verification using totp
