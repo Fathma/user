@@ -17,17 +17,17 @@ var filename;
 const storage = new GridFsStorage(
   {
     url: keys.database.mongoURI,
-    file: ( req, file ) => {
-      return new Promise( ( resolve, reject ) => {
-        crypto.randomBytes( 16, ( err, buf ) => {
-          if ( err ) return reject( err )
-          
-          filename = buf.toString( 'hex' ) + path.extname( file.originalname )
+    file: (req, file) => {
+      return new Promise((resolve, reject) => {
+        crypto.randomBytes(16, (err, buf) => {
+          if (err) return reject(err)
+
+          filename = buf.toString('hex') + path.extname(file.originalname)
           const fileInfo = {
             filename: filename,
             bucketName: 'fs'
           }
-          resolve( fileInfo )
+          resolve(fileInfo)
         })
       })
     }
@@ -45,7 +45,7 @@ router.post('/update/:id', passport.authenticate('jwt', { session: false }), use
 router.get('/forgetPassword/emailOTP', passport.authenticate('jwt', { session: false }), user.emailOTP)
 router.post('/forgetPassword/checkOTP', passport.authenticate('jwt', { session: false }), user.checkOTP)
 
-router.get('/google', passport.authenticate('google', { scope:['profile', 'email'] }))
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
 router.get('/google/redirect', passport.authenticate('google'), user.authGoogleRedirect)
 
 router.get('/facebook', passport.authenticate('facebook'));
