@@ -7,7 +7,7 @@ const UserReg = Joi.object().keys({
     password: Joi.string().trim().required().min(5),
     imageURL: Joi.any(),
     role: Joi.string().trim(),
-    password2: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'must match password' } } })
+    // password2: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'must match password' } } })
 })
 
 
