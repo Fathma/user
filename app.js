@@ -9,6 +9,13 @@ const port = 5000 || process.env.PORT;
 
 const keys = require("./config/keys");
 const userRoute = require("./src/routes/user.route");
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 // Map global promise
 mongoose.Promise = global.Promise;
